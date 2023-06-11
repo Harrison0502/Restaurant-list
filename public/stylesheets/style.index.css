@@ -54,6 +54,10 @@ header {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
+.card-new{
+  background-color: #fce2cf;
+}
+
 .card img {
   height: 180px;
 }
