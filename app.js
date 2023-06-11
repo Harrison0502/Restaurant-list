@@ -54,10 +54,15 @@ app.post('/restaurants',(req,res)=>{
     .then(() => res.redirect('/')) // 新增完成後導回首頁
     .catch(error => console.log(error))
 })
-// app.get('/restaurants/:restaurant_id', (req, res) => {
-//   const restaurant = RestaurantList.results.find(restaurant => restaurant.id === Number(req.params.restaurant_id))
-//   res.render('show', { restaurant })
-// })
+
+//瀏覽特定餐廳
+app.get('/restaurants/:id', (req, res) => {
+  const id = req.params.id
+  return RestaurantList.findById(id)
+    .lean()
+    .then((restaurant)=> res.render('show', { restaurant }))
+    .catch(error => console.log(error))
+})
 
 // app.get('/search', (req, res) => {
 //   const restaurants = restaurantList.results.filter(restaurant => restaurant.name.toLowerCase().includes(req.query.keyword.toLowerCase()))
