@@ -4,7 +4,7 @@ const port = 3000
 const restaurantList = require('./restaurant.json')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
-const db = mongoose.connection
+const Restaurant=require('./models/restaurants')
 
 
 // require express-handlebars here
@@ -17,6 +17,8 @@ if (process.env.NODE_ENV !== 'production') {
 
 // 設定連線到 mongoDB
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+
+const db = mongoose.connection
 
 db.on('error',()=>{
   console.log('mongodb error!')
