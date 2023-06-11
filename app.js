@@ -1,10 +1,10 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const restaurantList = require('./restaurant.json')
+const RestaurantList = require('./models/restaurant')//載入restaurant model
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
-const Restaurant=require('./models/restaurants')
+
 
 
 // require express-handlebars here
@@ -36,12 +36,14 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-  const restaurants = restaurantList.results
-  res.render(`index`, { restaurants })
+  RestaurantList.find()
+    .lean()
+    .then(restaurant => res.render('index', { restaurants })) // 將資料傳給 index 樣板
+    .catch(error => console.log(error))
 })
 
 app.get('/restaurants/:restaurant_id', (req, res) => {
-  const restaurant = restaurantList.results.find(restaurant => restaurant.id === Number(req.params.restaurant_id))
+  const restaurant = RestaurantList.results.find(restaurant => restaurant.id === Number(req.params.restaurant_id))
   res.render('show', { restaurant })
 })
 
