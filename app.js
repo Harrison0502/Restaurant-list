@@ -83,10 +83,22 @@ app.post('/restaurants/:id/edit', (req, res) => {
     .then(() => res.redirect(`/restaurants/${id}`))
     .catch(error => console.log(error))
 })
+
+//刪除餐廳
+app.post('/restaurants/:id/delete', (req, res) => {
+  const id = req.params.id
+  return RestaurantList.findById(id)
+    .then(restaurant => restaurant.remove() )
+    .then(() => res.redirect('/')) // 刪除後導回首頁
+    .catch(error => console.log(error))
+})
+
 // app.get('/search', (req, res) => {
 //   const restaurants = restaurantList.results.filter(restaurant => restaurant.name.toLowerCase().includes(req.query.keyword.toLowerCase()))
 //   res.render(`index`, { restaurants, keyword: req.query.keyword })
 // })
+
+
 
 app.listen(port, () => {
   console.log('Express is running now')
