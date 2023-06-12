@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 // require express-handlebars here
 const { restart } = require('nodemon')
+const restaurant = require('./models/restaurant')
 
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
@@ -64,6 +65,24 @@ app.get('/restaurants/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
+//修改餐廳頁面
+app.get('/restaurants/:id/edit',(req,res)=>{
+  const id = req.params.id
+  return RestaurantList.findById(id)
+    .lean()
+    .then((restaurant) => res.render('edit', { restaurant }))
+    .catch(error => console.log(error))
+})
+
+
+//修改餐廳資料
+app.post('/restaurants/:id/edit', (req, res) => {
+  const id = req.params.id
+  const updateData = req.body
+  RestaurantList.findOneAndUpdate({ _id: id }, updateData)
+    .then(() => res.redirect(`/restaurants/${id}`))
+    .catch(error => console.log(error))
+})
 // app.get('/search', (req, res) => {
 //   const restaurants = restaurantList.results.filter(restaurant => restaurant.name.toLowerCase().includes(req.query.keyword.toLowerCase()))
 //   res.render(`index`, { restaurants, keyword: req.query.keyword })

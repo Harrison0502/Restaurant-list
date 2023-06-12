@@ -1,0 +1,107 @@
+<div class="container py-5">
+
+  <div class="row ">
+    <div class="col-12 col-lg-10 col-xl-8 mx-auto">
+      <div class="card-new">
+        <div class="card-body">
+          <h5 class="card-title"> 修改餐廳資料 </h5>
+          <hr>
+          <form action="/restaurants/{{restaurant._id}}/edit" id="form" method="POST">
+            <div class="row g-2 mb-3">
+              <label for="name" class="col-md-4 col-form-label">
+                中文店名 <i class="fa-solid fa-utensils"></i>
+              </label>
+              <div class="col-md-8">
+                <input type="text" name="name" class="form-control" id="name" value="{{restaurant.name}}"  required>
+                <div class="invalid-feedback"> This field is required.</div>
+              </div>
+            </div>
+            <div class="row g-2 mb-3">
+              <label for="name_en" class="col-md-4 col-form-label">
+                英文店名 <i class="fa-solid fa-utensils"></i>
+              </label>
+              <div class="col-md-8">
+                <input type="text" name="name_en" class="form-control" id="name_en" value="{{restaurant.name_en}}" 
+                  required>
+                <div class="invalid-feedback"> This field is required.</div>
+              </div>
+            </div>
+            <div class="row g-2 mb-3">
+              <label for="category" class="col-md-4 col-form-label">
+                類別 <i class="fa-solid fa-filter"></i>
+              </label>
+              <div class="col-md-8">
+                <input list="categories" name="category" class="form-control" id="category" value="{{restaurant.category}}"  required>
+                <datalist id="categories">
+                  <option>日本料理</option>
+                  <option>中東料理</option>
+                  <option>中式料理</option>
+                  <option>義式餐廳</option>
+                  <option>美式</option>
+                  <option>酒吧</option>
+                  <option>咖啡</option>
+                </datalist>
+                <div class="invalid-feedback"> This field is required.</div>
+              </div>
+            </div>
+            <div class="row g-2 mb-3">
+              <label for="image" class="col-md-4 col-form-label">
+                圖片 <i class="fa-solid fa-image"></i>
+              </label>
+              <div class="col-md-8">
+                <input type="text" name="image" class="form-control" id="image" value="{{restaurant.image}}"  required>
+                <div class="invalid-feedback"> This field is required.</div>
+              </div>
+            </div>
+            <div class="row g-2 mb-3">
+              <label for="location" class="col-md-4 col-form-label">
+                地址 <i class="fa-solid fa-house"></i>
+              </label>
+              <div class="col-md-8">
+                <input type="text" name="location" class="form-control" id="location" value="{{restaurant.location}}"  required>
+                <div class="invalid-feedback"> This field is required.</div>
+              </div>
+            </div>
+            <div class="row g-2 mb-3">
+              <label for="phone" class="col-md-4 col-form-label">
+                電話 <i class="fa-solid fa-mobile"></i>
+              </label>
+              <div class="col-md-8">
+                <input type="text" name="phone" class="form-control" id="phone" value="{{restaurant.phone}}"  required>
+                <div class="invalid-feedback"> This field is required.</div>
+              </div>
+            </div>
+            <div class="row g-2 mb-3">
+              <label for="google_map" class="col-md-4 col-form-label">
+                Google 地圖 <i class="fa-solid fa-location-dot"></i>
+              </label>
+              <div class="col-md-8">
+                <input type="text" name="google_map" class="form-control" id="google_map" value="{{restaurant.google_map}}" 
+                  required>
+                <div class="invalid-feedback"> This field is required.</div>
+              </div>
+            </div>
+            <div class="row mb-3 g-2">
+              <label for="rating" class="col-md-4 col-form-label">
+                評分 <i class="fa-solid fa-star"></i>
+              </label>
+              <div class="col-md-8">
+                <input type="text" name="rating" class="form-control" id="rating" pattern="[0-9]+(\.[0-9]+)?"
+                  value="{{restaurant.rating}}"  required>
+                <div class="invalid-feedback"> This field is required.</div>
+              </div>
+            </div>
+            <div class="row mb-3 g-2">
+              <label for="description">餐廳簡介 <i class="fa-solid fa-comment"></i></label>
+              <textarea id="description" name="description" class="form-control" rows="3" cols="20"
+                  required>{{restaurant.description}}</textarea>
+              <div class="invalid-feedback" > This field is required.</div>
+            </div>
+            <button id="submit" class="btn btn-warning" type="submit">Save</button>
+            <a class=" ms-2 btn btn-outline-secondary" href="/" role="button">Back</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
