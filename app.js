@@ -93,10 +93,15 @@ app.post('/restaurants/:id/delete', (req, res) => {
     .catch(error => console.log(error))
 })
 
-// app.get('/search', (req, res) => {
-//   const restaurants = restaurantList.results.filter(restaurant => restaurant.name.toLowerCase().includes(req.query.keyword.toLowerCase()))
-//   res.render(`index`, { restaurants, keyword: req.query.keyword })
-// })
+//搜尋餐廳
+app.get('/search', (req, res) => {
+  const keyword=req.query.keyword.trim().toLowerCase()
+  return RestaurantList.find({ name: { $regex: new RegExp(keyword, "i") } })//找尋name 包含keyword的餐廳(不分大小寫)
+    .lean()
+    .then(restaurants => res.render('index', { restaurants , keyword})) // 將資料傳給 index 樣板
+    .catch(error => console.log(error))
+  
+})
 
 
 
