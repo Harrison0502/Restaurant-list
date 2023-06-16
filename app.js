@@ -1,29 +1,26 @@
 const express = require('express')
-const app = express()
 const port = 3000
-const RestaurantList = require('./models/restaurant')//載入restaurant model
+const RestaurantList = require('./models/restaurant')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
-// 引用 body-parser
 const bodyParser = require('body-parser')
-// require express-handlebars here
+const methodOverride = require('method-override') 
 const { restart } = require('nodemon')
 const restaurant = require('./models/restaurant')
+
+const app = express()
 
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-
 // 設定連線到 mongoDB
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const db = mongoose.connection
-
 db.on('error',()=>{
   console.log('mongodb error!')
 })
-
 db.once('open',()=>{
   console.log('mongodb connected!')
 })
@@ -33,7 +30,9 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars')
 // setting static files
 app.use(express.static('public'))
-// 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
+// 設定每一筆請求都會透過 methodOverride 進行前置處理
+app.use(methodOverride('_method'))
+// 規定每一筆請求都需要透過 body-parser 進行前置處理
 app.use(bodyParser.urlencoded({ extended: true }))
 
 //瀏覽餐廳
@@ -50,7 +49,7 @@ app.get('/restaurants/new',(req,res)=>{
 })
 
 //新增餐廳
-app.post('/restaurants',(req,res)=>{
+app.put('/restaurants',(req,res)=>{
    RestaurantList.create(req.body)
     .then(() => res.redirect('/')) // 新增完成後導回首頁
     .catch(error => console.log(error))
@@ -76,7 +75,7 @@ app.get('/restaurants/:id/edit',(req,res)=>{
 
 
 //修改餐廳資料
-app.post('/restaurants/:id/edit', (req, res) => {
+app.put('/restaurants/:id/edit', (req, res) => {
   const id = req.params.id
   const updateData = req.body
   RestaurantList.findOneAndUpdate({ _id: id }, updateData)
@@ -85,7 +84,7 @@ app.post('/restaurants/:id/edit', (req, res) => {
 })
 
 //刪除餐廳
-app.post('/restaurants/:id/delete', (req, res) => {
+app.delete('/restaurants/:id/delete', (req, res) => {
   const id = req.params.id
   return RestaurantList.findById(id)
     .then(restaurant => restaurant.remove() )

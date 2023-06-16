@@ -12,9 +12,9 @@
           </div>
         </div>
       </form>
-      <div class="text-end mt-2">
+      {{!-- <div class="text-end mt-2">
         <a href="/restaurants/new"><button class="btn btn-warning">新增餐廳</button></a>
-      </div>
+      </div> --}}
     </div>
   </div>
 </div>
@@ -43,7 +43,7 @@
           <div class="d-flex justify-content-end flex-wrap mb-2">
             <a href="/restaurants/{{this._id}}" class="btn btn-primary btn-sm  me-2">Detail</a>
             <a href="/restaurants/{{this._id}}/edit" class="btn btn-success btn-sm  me-2">Edit</a>
-            <form action="/restaurants/{{this._id}}/delete" method="POST">
+            <form action="/restaurants/{{this._id}}/delete?_method=DELETE" method="POST">
               <button type="submit" class="btn btn-danger btn-sm">
                 <i class="fa-solid fa-trash-alt"></i>
               </button>
