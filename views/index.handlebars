@@ -10,14 +10,30 @@
           <div class="input-group-append">
             <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
           </div>
+          <div class="input-group-append">
+            <button class="btn btn-secondary dropdown-toggle ms-3" type="button" data-bs-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              {{#if sortName}}<span class="current-sort">{{sortName}}</span>{{else}}排序{{/if}}
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/search?keyword={{keyword}}&sortBy=az">A->Z</a>
+              <a class="dropdown-item" href="/search?keyword={{keyword}}&sortBy=za">Z->A</a>
+              <a class="dropdown-item" href="/search?keyword={{keyword}}&sortBy=category">類別</a>
+              <a class="dropdown-item" href="/search?keyword={{keyword}}&sortBy=location">地區</a>
+              <a class="dropdown-item" href="/search?keyword={{keyword}}&sortBy=rating">評分</a>
+            </div>
+          </div>
         </div>
       </form>
-      {{!-- <div class="text-end mt-2">
+      <!-- <div class="text-end mt-2">
         <a href="/restaurants/new"><button class="btn btn-warning">新增餐廳</button></a>
-      </div> --}}
+      </div> -->
     </div>
   </div>
 </div>
+
+
+
 
 <!-- restaurant list -->
 <div class="container mt-5">
@@ -41,8 +57,8 @@
             </span>
           </div>
           <div class="d-flex justify-content-end flex-wrap mb-2">
-            <a href="/restaurants/{{this._id}}" class="btn btn-primary btn-sm  me-2">Detail</a>
-            <a href="/restaurants/{{this._id}}/edit" class="btn btn-success btn-sm  me-2">Edit</a>
+            <a href="/restaurants/{{this._id}}" class="btn btn-primary btn-sm  me-2">更多...</a>
+            <a href="/restaurants/{{this._id}}/edit" class="btn btn-success btn-sm  me-2">編輯</a>
             <form action="/restaurants/{{this._id}}/delete?_method=DELETE" method="POST">
               <button type="submit" class="btn btn-danger btn-sm">
                 <i class="fa-solid fa-trash-alt"></i>
