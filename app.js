@@ -1,12 +1,14 @@
 const express = require('express')
 const port = 3000
 const RestaurantList = require('./models/restaurant')
+const restaurant = require('./models/restaurant')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const methodOverride = require('method-override') 
+const routes = require('./routes')
+const methodOverride = require('method-override')
 const { restart } = require('nodemon')
-const restaurant = require('./models/restaurant')
+
 
 const app = express()
 
@@ -35,72 +37,10 @@ app.use(methodOverride('_method'))
 // 規定每一筆請求都需要透過 body-parser 進行前置處理
 app.use(bodyParser.urlencoded({ extended: true }))
 
-//瀏覽餐廳
-app.get('/', (req, res) => {
-  RestaurantList.find()
-    .lean()
-    .then(restaurants => res.render('index', { restaurants })) // 將資料傳給 index 樣板
-    .catch(error => console.log(error))
-})
-
-//新增頁面
-app.get('/restaurants/new',(req,res)=>{
-  return res.render('new')
-})
-
-//新增餐廳
-app.put('/restaurants',(req,res)=>{
-   RestaurantList.create(req.body)
-    .then(() => res.redirect('/')) // 新增完成後導回首頁
-    .catch(error => console.log(error))
-})
-
-//瀏覽特定餐廳
-app.get('/restaurants/:id', (req, res) => {
-  const id = req.params.id
-  return RestaurantList.findById(id)
-    .lean()
-    .then((restaurant)=> res.render('show', { restaurant }))
-    .catch(error => console.log(error))
-})
-
-//修改餐廳頁面
-app.get('/restaurants/:id/edit',(req,res)=>{
-  const id = req.params.id
-  return RestaurantList.findById(id)
-    .lean()
-    .then((restaurant) => res.render('edit', { restaurant }))
-    .catch(error => console.log(error))
-})
+//將 request 導入路由器
+app.use(routes)
 
 
-//修改餐廳資料
-app.put('/restaurants/:id/edit', (req, res) => {
-  const id = req.params.id
-  const updateData = req.body
-  RestaurantList.findOneAndUpdate({ _id: id }, updateData)
-    .then(() => res.redirect(`/restaurants/${id}`))
-    .catch(error => console.log(error))
-})
-
-//刪除餐廳
-app.delete('/restaurants/:id/delete', (req, res) => {
-  const id = req.params.id
-  return RestaurantList.findById(id)
-    .then(restaurant => restaurant.remove() )
-    .then(() => res.redirect('/')) // 刪除後導回首頁
-    .catch(error => console.log(error))
-})
-
-//搜尋餐廳
-app.get('/search', (req, res) => {
-  const keyword=req.query.keyword.trim().toLowerCase()
-  return RestaurantList.find({ name: { $regex: new RegExp(keyword, "i") } })//找尋name 包含keyword的餐廳(不分大小寫)
-    .lean()
-    .then(restaurants => res.render('index', { restaurants , keyword})) // 將資料傳給 index 樣板
-    .catch(error => console.log(error))
-  
-})
 
 
 
