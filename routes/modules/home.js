@@ -6,7 +6,8 @@ const RestaurantList = require('../../models/restaurant')
 
 //定義首頁路由
 router.get('/', (req, res) => {
-  RestaurantList.find()
+  const userId = req.user._id
+  RestaurantList.find({ userId })
     .lean()
     .then(restaurants => res.render('index', { restaurants })) // 將資料傳給 index 樣板
     .catch(error => console.log(error))

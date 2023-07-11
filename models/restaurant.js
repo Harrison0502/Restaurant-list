@@ -37,6 +37,12 @@ const restaurantSchema= new Schema({
   description: {
     type: String, // 資料型別是字串
     required: true // 這是個必填欄位
+  },
+  userId: {  
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    index: true,
+    required: true
   }
 
 })
