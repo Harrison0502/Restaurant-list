@@ -11,7 +11,9 @@ const usePassport = require('./config/passport')
 const methodOverride = require('method-override')
 const { restart } = require('nodemon')
 require('./config/mongoose')
-
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 
 const app = express()
 
@@ -20,16 +22,14 @@ const app = express()
 // setting template engine
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars')
-
 app.use(express.static('public'))
 app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
-  secret: 'my-secret-key',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))
-
 usePassport(app)
 app.use(flash())
 app.use((req, res, next) => {
