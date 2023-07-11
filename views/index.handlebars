@@ -37,7 +37,9 @@
     <div class="col-md-10 col-12 mx-auto">
       <div class="row row-cols-sm-3">
         {{#unless restaurants}}
-        <p>查無此餐廳</p>
+        {{#if home}}<h3 class="text-center">請先新增餐廳</h3>
+        {{else}}<h3 class="text-center">查無此餐廳</h3>
+        {{/if}}
         {{/unless}}
         {{#each restaurants}}
         <div class="card mb-3">

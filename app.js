@@ -5,6 +5,7 @@ const restaurant = require('./models/restaurant')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const session = require('express-session')
+const flash = require('connect-flash')
 const routes = require('./routes')
 const usePassport = require('./config/passport')
 const methodOverride = require('method-override')
@@ -28,13 +29,17 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
+
 usePassport(app)
+app.use(flash())
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated()
   res.locals.user = req.user
+  res.locals.success_msg = req.flash('success_msg')  
+  res.locals.warning_msg = req.flash('warning_msg')
   next()
 })
-//將 request 導入路由器
+
 app.use(routes)
 
 

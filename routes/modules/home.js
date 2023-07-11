@@ -2,6 +2,7 @@
 const express = require('express')
 const router = express.Router()
 const RestaurantList = require('../../models/restaurant')
+const restaurant = require('../../models/restaurant')
 
 
 //定義首頁路由
@@ -9,7 +10,8 @@ router.get('/', (req, res) => {
   const userId = req.user._id
   RestaurantList.find({ userId })
     .lean()
-    .then(restaurants => res.render('index', { restaurants })) // 將資料傳給 index 樣板
+    .then(restaurants => 
+      res.render('index', { restaurants , home:true})) // 將資料傳給 index 樣板
     .catch(error => console.log(error))
 })
 
@@ -17,6 +19,7 @@ router.get('/', (req, res) => {
 router.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim().toLowerCase()
   const sortBy=req.query.sortBy
+  const userId = req.user._id
   let sortName=''
   let sortObject={}
   if (sortBy === 'az') {
@@ -34,7 +37,7 @@ router.get('/search', (req, res) => {
     sortObject.rating = -1//降冪，由高到低
     sortName = "評分"
   }
-  return RestaurantList.find({ name: { $regex: new RegExp(keyword, "i") } })//找尋name 包含keyword的餐廳(不分大小寫)
+  return RestaurantList.find({ name: { $regex: new RegExp(keyword, "i") }, userId })//找尋name 包含keyword的餐廳(不分大小寫)
     .lean()
     .sort(sortObject)
     .then(restaurants => res.render('index', { restaurants , keyword , sortName})) // 將資料傳給 index 樣板
