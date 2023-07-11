@@ -6,6 +6,7 @@ const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const routes = require('./routes')
+const usePassport = require('./config/passport')
 const methodOverride = require('method-override')
 const { restart } = require('nodemon')
 require('./config/mongoose')
@@ -28,6 +29,7 @@ app.use(session({
   saveUninitialized: true
 }))
 
+usePassport(app)
 //將 request 導入路由器
 app.use(routes)
 
